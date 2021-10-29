@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom";
-import LayoutCalculator from "./calculator/LayoutCalculator";
+import Calculator from "./calculator/Calculator";
 
 const App = () => {
   return (
     <>
-      <LayoutCalculator />
+      <Calculator />
     </>
   );
 };
