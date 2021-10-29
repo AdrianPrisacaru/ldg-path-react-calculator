@@ -1,5 +1,5 @@
 const LayoutCalculator = () => {
-  return <div>Hello</div>;
+  return <div>Hello World</div>;
 };
 
 export default LayoutCalculator;
