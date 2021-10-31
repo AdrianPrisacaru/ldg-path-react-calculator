@@ -1,18 +1,17 @@
-import { Textfit } from "react-textfit";
 import "./ScreenContainer.css";
 
 const ScreenContainer = ({ answer }) => {
+  const SCREEN_TEXT_SIZE = 3;
+
   return (
-    <div className="screenMainContainer">
-      <Textfit
-        mode="single"
-        max={45}
-        className="screenTest"
-        style={{ color: "#FFFFFF" }}
-      >
-        {answer ? answer : 0}
-      </Textfit>
-    </div>
+    <section
+      className="screenMainContainer"
+      style={{
+        fontSize: SCREEN_TEXT_SIZE - answer.length * 0.045 + "em",
+      }}
+    >
+      <p className="rest">{answer ? answer.replace(".", ",") : "0"}</p>
+    </section>
   );
 };
 

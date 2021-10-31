@@ -12,14 +12,35 @@ const ButtonsContainer = ({
   const [cleanData, setCleanData] = useState("AC");
   const [operator, setOperator] = useState("");
 
-  const handleclick = (e) => {
-    if (e.target.value !== "0" || answer) {
+  const handleClickButton = (event) => {
+    if (event.target.value === "." && answer.includes(".")) {
+      return;
+    }
+
+    if (event.target.value === "." && answer === "") {
+      setPrevValue("0.");
+      setAnswer("0.");
+      setCleanData("C");
+      return;
+    }
+
+    if (event.target.value !== "0" || answer) {
       if (operator) {
-        setNextValue(nextValue.concat(e.target.value));
-        setAnswer(nextValue.concat(e.target.value));
+        setNextValue(nextValue.concat(event.target.value));
+        setAnswer(
+          event.target.value === "." ||
+            (answer.includes(".") && !answer.includes("e"))
+            ? String(nextValue.concat(event.target.value))
+            : String(Number(nextValue.concat(event.target.value)))
+        );
       } else {
-        setPrevValue(prevValue.concat(e.target.value));
-        setAnswer(prevValue.concat(e.target.value));
+        setPrevValue(prevValue.concat(event.target.value));
+        setAnswer(
+          event.target.value === "." ||
+            (answer.includes(".") && !answer.includes("e"))
+            ? String(prevValue.concat(event.target.value))
+            : String(Number(prevValue.concat(event.target.value)))
+        );
         setCleanData("C");
       }
     }
@@ -39,11 +60,9 @@ const ButtonsContainer = ({
     }
   };
 
-  const operatorHandle = (e) => {
-    setOperator(e.target.value);
-
+  const operatorHandle = (event) => {
     if (prevValue && nextValue) {
-      switch (e.target.value) {
+      switch (operator ? operator : event.target.value) {
         case "+":
           const placeHolderSum = Number(prevValue) + Number(nextValue);
           setAnswer(String(placeHolderSum));
@@ -64,17 +83,15 @@ const ButtonsContainer = ({
           setAnswer(String(placeHolderMult));
           setPrevValue(String(placeHolderMult));
           break;
-        case "%":
-          const placeHolderPercent = Number(answer) / 100;
-          setAnswer(String(placeHolderPercent));
-          setPrevValue(String(placeHolderPercent));
-          break;
         default:
           break;
       }
     }
+
+    setOperator(event.target.value);
     setNextValue("");
-    if (answer) {
+
+    if (answer && !operator) {
       setPrevValue(answer);
     }
   };
@@ -98,10 +115,6 @@ const ButtonsContainer = ({
           const placeHolderMult = Number(prevValue) * Number(nextValue);
           setAnswer(String(placeHolderMult));
           break;
-        case "%":
-          const placeHolderPercent = Number(answer) / 100;
-          setAnswer(String(placeHolderPercent));
-          break;
         default:
           break;
       }
@@ -116,8 +129,13 @@ const ButtonsContainer = ({
     setAnswer(answer > 0 ? "-" + answer : answer.replace("-", ""));
   };
 
+  const percentageValue = () => {
+    setAnswer(String(Number(answer) / 100));
+    setPrevValue(String(Number(answer) / 100));
+  };
+
   return (
-    <div className="buttonsContainer">
+    <section className="buttonsContainer">
       <div className="rowContainer">
         <button
           className="btnContent"
@@ -137,8 +155,7 @@ const ButtonsContainer = ({
         <button
           className="btnContent"
           style={{ backgroundColor: "#656366" }}
-          value={"%"}
-          onClick={operatorHandle}
+          onClick={percentageValue}
         >
           %
         </button>
@@ -151,39 +168,40 @@ const ButtonsContainer = ({
           value={"/"}
           onClick={operatorHandle}
         >
-          /
+          &divide;
         </button>
       </div>
       <div className="rowContainer">
-        <button className="btnContent" value={"7"} onClick={handleclick}>
+        <button className="btnContent" value={"7"} onClick={handleClickButton}>
           7
         </button>
-        <button className="btnContent" value={"8"} onClick={handleclick}>
+        <button className="btnContent" value={"8"} onClick={handleClickButton}>
           8
         </button>
-        <button className="btnContent" value={"9"} onClick={handleclick}>
+        <button className="btnContent" value={"9"} onClick={handleClickButton}>
           9
         </button>
         <button
           className="btnContent"
           style={{
             backgroundColor: "#FFA00A",
+            fontWeight: "400",
             border: operator === "X" ? "1.5px solid black" : "",
           }}
           value={"X"}
           onClick={operatorHandle}
         >
-          X
+          &times;
         </button>
       </div>
       <div className="rowContainer">
-        <button className="btnContent" value={"4"} onClick={handleclick}>
+        <button className="btnContent" value={"4"} onClick={handleClickButton}>
           4
         </button>
-        <button className="btnContent" value={"5"} onClick={handleclick}>
+        <button className="btnContent" value={"5"} onClick={handleClickButton}>
           5
         </button>
-        <button className="btnContent" value={"6"} onClick={handleclick}>
+        <button className="btnContent" value={"6"} onClick={handleClickButton}>
           6
         </button>
         <button
@@ -195,17 +213,17 @@ const ButtonsContainer = ({
           value={"-"}
           onClick={operatorHandle}
         >
-          -
+          &#8722;
         </button>
       </div>
       <div className="rowContainer">
-        <button className="btnContent" value={"1"} onClick={handleclick}>
+        <button className="btnContent" value={"1"} onClick={handleClickButton}>
           1
         </button>
-        <button className="btnContent" value={"2"} onClick={handleclick}>
+        <button className="btnContent" value={"2"} onClick={handleClickButton}>
           2
         </button>
-        <button className="btnContent" value={"3"} onClick={handleclick}>
+        <button className="btnContent" value={"3"} onClick={handleClickButton}>
           3
         </button>
         <button
@@ -225,11 +243,11 @@ const ButtonsContainer = ({
           className="btnContent"
           style={{ width: "50%", borderRadius: "0 0 0 9px" }}
           value={"0"}
-          onClick={handleclick}
+          onClick={handleClickButton}
         >
           0
         </button>
-        <button className="btnContent" value={"."} onClick={handleclick}>
+        <button className="btnContent" value={"."} onClick={handleClickButton}>
           ,
         </button>
         <button
@@ -240,7 +258,7 @@ const ButtonsContainer = ({
           =
         </button>
       </div>
-    </div>
+    </section>
   );
 };
 
