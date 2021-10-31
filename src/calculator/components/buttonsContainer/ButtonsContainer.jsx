@@ -102,7 +102,7 @@ const ButtonsContainer = ({
         case "+":
           const placeHolderSum = Number(prevValue) + Number(nextValue);
           setAnswer(String(placeHolderSum));
-          console.log("HERE?");
+          console.log("WHAT?", placeHolderSum);
           break;
         case "-":
           const placeHolderDif = Number(prevValue) - Number(nextValue);
@@ -136,11 +136,9 @@ const ButtonsContainer = ({
   };
 
   const handleButtonsKeyPress = (event) => {
-    console.log(event);
     if (event.key === "Enter") {
       setOperator("=");
       calculator();
-      console.log(answer);
     }
   };
 
