@@ -102,6 +102,7 @@ const ButtonsContainer = ({
         case "+":
           const placeHolderSum = Number(prevValue) + Number(nextValue);
           setAnswer(String(placeHolderSum));
+          console.log("HERE?");
           break;
         case "-":
           const placeHolderDif = Number(prevValue) - Number(nextValue);
@@ -134,8 +135,17 @@ const ButtonsContainer = ({
     setPrevValue(String(Number(answer) / 100));
   };
 
+  const handleButtonsKeyPress = (event) => {
+    console.log(event);
+    if (event.key === "Enter") {
+      setOperator("=");
+      calculator();
+      console.log(answer);
+    }
+  };
+
   return (
-    <section className="buttonsContainer">
+    <section className="buttonsContainer" onKeyPress={handleButtonsKeyPress}>
       <div className="rowContainer">
         <button
           className="btnContent"
