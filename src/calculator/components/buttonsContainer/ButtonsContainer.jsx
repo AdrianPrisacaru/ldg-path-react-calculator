@@ -102,7 +102,6 @@ const ButtonsContainer = ({
         case "+":
           const placeHolderSum = Number(prevValue) + Number(nextValue);
           setAnswer(String(placeHolderSum));
-          console.log("WHAT?", placeHolderSum);
           break;
         case "-":
           const placeHolderDif = Number(prevValue) - Number(nextValue);
