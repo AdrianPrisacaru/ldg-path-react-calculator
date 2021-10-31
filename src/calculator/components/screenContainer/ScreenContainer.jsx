@@ -1,8 +1,7 @@
 import { Textfit } from "react-textfit";
 import "./ScreenContainer.css";
 
-const ScreenContainer = () => {
-  const result = "254";
+const ScreenContainer = ({ answer }) => {
   return (
     <div className="screenMainContainer">
       <Textfit
@@ -11,7 +10,7 @@ const ScreenContainer = () => {
         className="screenTest"
         style={{ color: "#FFFFFF" }}
       >
-        {result}
+        {answer ? answer : 0}
       </Textfit>
     </div>
   );
