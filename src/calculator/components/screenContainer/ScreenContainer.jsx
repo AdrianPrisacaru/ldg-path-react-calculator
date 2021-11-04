@@ -23,7 +23,6 @@ const ScreenContainer = ({ answer }) => {
         return "0.10em";
     }
   };
-  console.log(answer);
   return (
     <section
       className="screenMainContainer"
