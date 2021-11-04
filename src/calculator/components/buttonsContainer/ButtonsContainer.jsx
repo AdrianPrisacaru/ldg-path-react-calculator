@@ -12,6 +12,38 @@ const ButtonsContainer = ({
   const [cleanData, setCleanData] = useState("AC");
   const [operator, setOperator] = useState("");
 
+  const handleKeyDownPress = (buttonPress) => {
+    if (buttonPress === "." && answer.includes(".")) {
+      return;
+    }
+
+    if (buttonPress === "." && answer === "") {
+      setPrevValue("0.");
+      setAnswer("0.");
+      setCleanData("C");
+      return;
+    }
+
+    if (buttonPress !== "0" || answer) {
+      if (operator) {
+        setNextValue(nextValue.concat(buttonPress));
+        setAnswer(
+          buttonPress === "." || (answer.includes(".") && !answer.includes("e"))
+            ? String(nextValue.concat(buttonPress))
+            : String(Number(nextValue.concat(buttonPress)))
+        );
+      } else {
+        setPrevValue(prevValue.concat(buttonPress));
+        setAnswer(
+          buttonPress === "." || (answer.includes(".") && !answer.includes("e"))
+            ? String(prevValue.concat(buttonPress))
+            : String(Number(prevValue.concat(buttonPress)))
+        );
+        setCleanData("C");
+      }
+    }
+  };
+
   const handleClickButton = (event) => {
     if (event.target.value === "." && answer.includes(".")) {
       return;
@@ -57,6 +89,42 @@ const ButtonsContainer = ({
       setNextValue("");
       setOperator("");
       setCleanData("AC");
+    }
+  };
+
+  const operatorHandlePressKey = (buttonPress) => {
+    if (prevValue && nextValue) {
+      switch (operator ? operator : buttonPress) {
+        case "+":
+          const placeHolderSum = Number(prevValue) + Number(nextValue);
+          setAnswer(String(placeHolderSum));
+          setPrevValue(String(placeHolderSum));
+          break;
+        case "-":
+          const placeHolderDif = Number(prevValue) - Number(nextValue);
+          setAnswer(String(placeHolderDif));
+          setPrevValue(String(placeHolderDif));
+          break;
+        case "/":
+          const placeHolderDiv = Number(prevValue) / Number(nextValue);
+          setAnswer(String(placeHolderDiv));
+          setPrevValue(String(placeHolderDiv));
+          break;
+        case "X":
+          const placeHolderMult = Number(prevValue) * Number(nextValue);
+          setAnswer(String(placeHolderMult));
+          setPrevValue(String(placeHolderMult));
+          break;
+        default:
+          break;
+      }
+    }
+
+    setOperator(buttonPress);
+    setNextValue("");
+
+    if (answer && !operator) {
+      setPrevValue(answer);
     }
   };
 
@@ -135,14 +203,87 @@ const ButtonsContainer = ({
   };
 
   const handleButtonsKeyPress = (event) => {
-    if (event.key === "Enter") {
-      setOperator("=");
-      calculator();
+    switch (event.key) {
+      case "Enter":
+      case "=":
+        calculator();
+        break;
+      case "/":
+        operatorHandlePressKey("/");
+        calculator();
+        break;
+      case "%":
+        operatorHandlePressKey("%");
+        percentageValue();
+        break;
+      case "+":
+        operatorHandlePressKey("+");
+        calculator();
+        break;
+      case "-":
+        operatorHandlePressKey("-");
+        calculator();
+        break;
+      case "+/-":
+        operatorHandlePressKey("+/-");
+        negateValue();
+        break;
+      case "c":
+        clear();
+        break;
+      case "C":
+        clear();
+        break;
+      case "AC":
+        clear();
+        break;
+      case "ac":
+        clear();
+        break;
+      case "1":
+        handleKeyDownPress(event.key);
+        break;
+      case "2":
+        handleKeyDownPress(event.key);
+        break;
+      case "3":
+        handleKeyDownPress(event.key);
+        break;
+      case "4":
+        handleKeyDownPress(event.key);
+        break;
+      case "5":
+        handleKeyDownPress(event.key);
+        break;
+      case "6":
+        handleKeyDownPress(event.key);
+        break;
+      case "7":
+        handleKeyDownPress(event.key);
+        break;
+      case "8":
+        handleKeyDownPress(event.key);
+        break;
+      case "9":
+        handleKeyDownPress(event.key);
+        break;
+      case "0":
+        handleKeyDownPress(event.key);
+        break;
+      case ".":
+        handleKeyDownPress(event.key);
+        break;
+      default:
+        break;
     }
   };
 
   return (
-    <section className="buttonsContainer" onKeyPress={handleButtonsKeyPress}>
+    <section
+      className="buttonsContainer"
+      tabIndex="0"
+      onKeyDown={handleButtonsKeyPress}
+    >
       <div className="rowContainer">
         <button
           className="btnContent"
